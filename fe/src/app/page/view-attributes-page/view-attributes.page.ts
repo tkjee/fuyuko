@@ -4,9 +4,10 @@ import {ViewService} from '../../service/view-service/view.service';
 import {map} from 'rxjs/operators';
 import {View} from '../../model/view.model';
 import {Subscription} from 'rxjs';
-import {Attribute} from '../../model/attribute.model';
+import {Attribute, Attribute2} from '../../model/attribute.model';
 import {AttributeTableComponentEvent} from '../../component/attribute-table-component/attribute-table.component';
 import {NotificationsService} from 'angular2-notifications';
+import {ApiResponse} from "../../model/response.model";
 
 @Component({
   templateUrl: './view-attributes.page.html',
@@ -17,7 +18,7 @@ export class ViewAttributesPageComponent implements OnInit, OnDestroy {
   subscription: Subscription;
 
   currentView: View;
-  attributes: Attribute[];
+  attributes: Attribute2[];
 
   constructor(private attributeService: AttributeService,
               private notificationsService: NotificationsService,
@@ -46,7 +47,7 @@ export class ViewAttributesPageComponent implements OnInit, OnDestroy {
     if (this.currentView) {
       this.attributeService.getAllAttributesByView(this.currentView.id)
         .pipe(
-          map((a: Attribute[]) => {
+          map((a: Attribute2[]) => {
             this.attributes = a;
           })
         ).subscribe();
@@ -59,7 +60,7 @@ export class ViewAttributesPageComponent implements OnInit, OnDestroy {
         this.attributeService
           .deleteAttribute($event.view, $event.attribute)
           .pipe(
-            map((a: Attribute) => {
+            map((a: ApiResponse) => {
               this.notificationsService.success('Success', 'Attribute deleted');
               this.reloadAttributes();
             })
@@ -68,7 +69,7 @@ export class ViewAttributesPageComponent implements OnInit, OnDestroy {
       case 'search':
         this.attributeService.searchAttribute($event.view, $event.search)
           .pipe(
-            map((a: Attribute[]) => {
+            map((a: Attribute2[]) => {
               this.attributes = a;
             })
           ).subscribe();
@@ -76,7 +77,7 @@ export class ViewAttributesPageComponent implements OnInit, OnDestroy {
       case 'add':
         this.attributeService.addAttribute($event.view, $event.attribute)
           .pipe(
-            map((a: Attribute) => {
+            map((a: ApiResponse) => {
               this.notificationsService.success('Success', 'Attribute added');
               this.reloadAttributes();
             })
@@ -85,7 +86,7 @@ export class ViewAttributesPageComponent implements OnInit, OnDestroy {
       case 'edit':
         this.attributeService.updateAttribute($event.view, $event.attribute)
           .pipe(
-            map((a: Attribute) => {
+            map((a: ApiResponse) => {
               this.notificationsService.success('Success', 'Attribute updated');
               this.reloadAttributes();
             })

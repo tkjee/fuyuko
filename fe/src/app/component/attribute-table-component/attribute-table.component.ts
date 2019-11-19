@@ -1,7 +1,7 @@
 import {Component, EventEmitter, Input, OnChanges, Output, SimpleChange, SimpleChanges} from '@angular/core';
 import {FormBuilder, FormControl} from '@angular/forms';
 import {DataSource} from '@angular/cdk/table';
-import {Attribute} from '../../model/attribute.model';
+import {Attribute, Attribute2} from '../../model/attribute.model';
 import {CollectionViewer} from '@angular/cdk/collections';
 import {BehaviorSubject, Observable, Subject} from 'rxjs';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
@@ -9,11 +9,11 @@ import {EditAttributeDialogComponent} from './edit-attribute-dialog.component';
 import {map} from 'rxjs/operators';
 import {View} from '../../model/view.model';
 
-class AttributeTableDataSource extends DataSource<Attribute> {
+class AttributeTableDataSource extends DataSource<Attribute2> {
 
-  private subject: BehaviorSubject<Attribute[]> = new BehaviorSubject(null);
+  private subject: BehaviorSubject<Attribute2[]> = new BehaviorSubject(null);
 
-  connect(collectionViewer: CollectionViewer): Observable<Attribute[] | ReadonlyArray<Attribute>> {
+  connect(collectionViewer: CollectionViewer): Observable<Attribute2[] | ReadonlyArray<Attribute2>> {
     return this.subject.asObservable();
   }
 
@@ -21,7 +21,7 @@ class AttributeTableDataSource extends DataSource<Attribute> {
     this.subject.complete();
   }
 
-  update(attributes: Attribute[]) {
+  update(attributes: Attribute2[]) {
     this.subject.next(attributes);
   }
 }
@@ -32,7 +32,7 @@ export interface AttributeTableComponentEvent {
   type: EventType;
   search?: string;
   view?: View;
-  attribute?: Attribute;
+  attribute?: Attribute2;
 }
 
 @Component({
@@ -46,7 +46,7 @@ export class AttributeTableComponent implements OnChanges {
   @Input() searchFieldHint;
   @Input() searchFieldPlaceholder;
   @Input() view: View;
-  @Input() attributes: Attribute[];
+  @Input() attributes: Attribute2[];
 
   @Output() events: EventEmitter<AttributeTableComponentEvent>;
 
@@ -80,7 +80,7 @@ export class AttributeTableComponent implements OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.attributes) {
       const simpleChange: SimpleChange = changes.attributes;
-      const attributes: Attribute[] = simpleChange.currentValue;
+      const attributes: Attribute2[] = simpleChange.currentValue;
       this.dataSource.update(attributes);
     }
   }
@@ -90,7 +90,8 @@ export class AttributeTableComponent implements OnChanges {
       id: -1,
       type: 'string',
       name: '',
-      description: ''
+      description: '',
+      metadatas: []
     };
     this.popupEditDialog('add', attribute);
   }
@@ -112,7 +113,7 @@ export class AttributeTableComponent implements OnChanges {
               type: command,
               view: this.view,
               attribute: a
-            });
+            } as AttributeTableComponentEvent);
           }
         })
       ).subscribe();

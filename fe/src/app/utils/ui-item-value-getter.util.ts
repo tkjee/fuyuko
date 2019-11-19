@@ -1,4 +1,4 @@
-import {Attribute} from '../model/attribute.model';
+import {Attribute, Attribute2} from '../model/attribute.model';
 import {
   AreaValue, CurrencyValue,
   DateValue, DimensionValue, DoubleSelectValue, HeightValue,
@@ -11,7 +11,7 @@ import {
   VolumeValue, WidthValue, Value
 } from '../model/item.model';
 
-export const hasItemValue = (attribute: Attribute, value: Value): boolean => {
+export const hasItemValue = (attribute: Attribute2, value: Value): boolean => {
     if (!value || !value.val) {
       return false;
     }

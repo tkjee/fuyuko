@@ -1,6 +1,6 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
-import {Attribute} from '../../model/attribute.model';
+import {Attribute, Attribute2} from '../../model/attribute.model';
 import {ItemValueOperatorAndAttribute} from '../../model/item-attribute.model';
 import {
     AREA_OPERATOR_TYPES,
@@ -54,7 +54,7 @@ export class AttributeOperatorEditorComponent implements OnInit {
 
     @Output() events: EventEmitter<ItemValueOperatorAndAttribute>;
 
-    attribute: Attribute;
+    attribute: Attribute2;
     operator: OperatorType;
     itemValue: Value;
 

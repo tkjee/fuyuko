@@ -1,5 +1,5 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {Attribute} from '../../model/attribute.model';
+import {Attribute, Attribute2} from '../../model/attribute.model';
 import {AttributeService} from '../../service/attribute-service/attribute.service';
 import {ViewService} from '../../service/view-service/view.service';
 import {View} from '../../model/view.model';
@@ -14,7 +14,7 @@ import {Subscription} from "rxjs";
 })
 export class BulkEditPageComponent implements OnInit, OnDestroy {
 
-  attributes: Attribute[];
+  attributes: Attribute2[];
   allViews: View[];
 
   currentView: View;
@@ -36,7 +36,7 @@ export class BulkEditPageComponent implements OnInit, OnDestroy {
                                 this.currentView = this.allViews ? this.allViews.find((vv: View) => vv.id === v.id) : undefined;
                                 this.subscription = this.attributeService.getAllAttributesByView(this.currentView.id)
                                     .pipe(
-                                        map((a: Attribute[]) => {
+                                        map((a: Attribute2[]) => {
                                             this.attributes = a;
                                         })
                                     ).subscribe();

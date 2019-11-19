@@ -1,4 +1,9 @@
 
+export const DEFAULT_NUMERAL_FORMAT = '0.0';
+export const DEFAULT_DATE_FORMAT = 'DD-MM-YYYY';
+export const DEFAULT_DATETIME_FORMAT = 'DD-MM-YYYY hh:mm:ss a';
+export const DEFAULT_TIME_FORMAT = 'hh:mm:ss a';
+
 export const DIMENSTION_UNITS = ['mm', 'cm', 'm'];
 export type DimensionUnits = 'mm' | 'cm' | 'm';
 

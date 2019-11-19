@@ -1,5 +1,5 @@
 import {Item, TableItem, Value} from '../model/item.model';
-import {Attribute} from '../model/attribute.model';
+import {Attribute, Attribute2} from '../model/attribute.model';
 import {setItemValue} from './ui-item-value-setter.util';
 import {ItemValueOperatorAndAttributeWithId} from '../component/rules-component/rule-editor-dialog.component';
 
@@ -15,13 +15,13 @@ export function createNewTableItem(id: number, attributes: Attribute[], parentId
     return i;
 }
 
-export function createNewItemValue(a: Attribute): Value {
+export function createNewItemValue(a: Attribute2): Value {
     const val: Value = { attributeId: a.id, val: undefined } as Value;
     setItemValue(a, val);
     return val;
 }
 
-export function addAttributesToItem(i: Item | TableItem, attributes: Attribute[]) {
+export function addAttributesToItem(i: Item | TableItem, attributes: Attribute2[]) {
     attributes.forEach((a: Attribute) => {
         const val: Value = { attributeId: a.id, val: undefined } as Value;
         i[a.id] = val;

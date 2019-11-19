@@ -22,7 +22,14 @@ export interface Pair2 {
 }
 
 
-export interface Attribute {
+export class Attribute {
+  id: number;
+  type: string;
+  name: string;
+  description: string;
+  metadatas: Metadata2[];
+
+  /*
   id: number;
   type: AttributeType;
   name: string;
@@ -31,6 +38,7 @@ export interface Attribute {
   showCurrencyCountry?: boolean; // applicable to: currency
   pair1?: Pair1[]; // for single select & double select
   pair2?: Pair2[]; // for double select
+   */
 }
 
 

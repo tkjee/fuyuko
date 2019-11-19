@@ -9,7 +9,7 @@ import {ViewService} from '../../service/view-service/view.service';
 import {ItemService} from '../../service/item-service/item.service';
 import {Item} from '../../model/item.model';
 import {map} from 'rxjs/operators';
-import {Attribute} from '../../model/attribute.model';
+import {Attribute, Attribute2} from '../../model/attribute.model';
 
 
 @Component({
@@ -58,8 +58,8 @@ export class ViewDataListPageComponent implements OnInit, OnDestroy {
         this.attributeService.getAllAttributesByView(viewId),
         this.itemService.getAllItems(viewId)
     ).pipe(
-        map( (r: [Attribute[], Item[]]) => {
-          const attributes: Attribute[] = r[0];
+        map( (r: [Attribute2[], Item[]]) => {
+          const attributes: Attribute2[] = r[0];
           const items: Item[] = r[1];
           this.itemAndAttributeSet = {
             attributes,

@@ -1,7 +1,7 @@
 import {AfterViewInit, Component, Inject, ViewChild} from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatSelectChange } from '@angular/material/select';
-import {Attribute, ATTRIBUTE_TYPES} from '../../model/attribute.model';
+import {Attribute, Attribute2, ATTRIBUTE_TYPES} from '../../model/attribute.model';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {
   dateFormatValidator,
@@ -11,6 +11,11 @@ import {
   timeFormatValidator
 } from '../../service/custom-validators';
 import {SingleSelectComponent} from './single-select.component';
+import {
+  getFormatMetadataEntry,
+  getShowCurrencyCountryMetadataEntry,
+  setFormatMetadataEntry, setShowCurrencyCountryMetadataEntry
+} from "../../utils/attribute-metadata.util";
 
 
 
@@ -81,7 +86,7 @@ export class EditAttributeDialogComponent implements AfterViewInit {
       format: this.formControlNumberAttributeFormat,
     });
     if (attribute.type === 'number') {
-      this.formControlNumberAttributeFormat.setValue(attribute.format);
+      this.formControlNumberAttributeFormat.setValue(getFormatMetadataEntry(attribute));
     }
 
     this.formControlDateAttributeFormat = this.formBuilder.control('', [dateFormatValidator]);
@@ -89,7 +94,7 @@ export class EditAttributeDialogComponent implements AfterViewInit {
       format: this.formControlDateAttributeFormat
     });
     if (attribute.type === 'date') {
-      this.formControlDateAttributeFormat.setValue(attribute.format);
+      this.formControlDateAttributeFormat.setValue(getFormatMetadataEntry(attribute));
     }
 
 
@@ -98,7 +103,7 @@ export class EditAttributeDialogComponent implements AfterViewInit {
       country: this.formControlCurrencyAttributeCountry
     });
     if (attribute.type === 'currency') {
-      this.formControlCurrencyAttributeCountry.setValue(attribute.showCurrencyCountry);
+      this.formControlCurrencyAttributeCountry.setValue(getShowCurrencyCountryMetadataEntry(attribute));
     }
 
 
@@ -107,7 +112,7 @@ export class EditAttributeDialogComponent implements AfterViewInit {
       format: this.formControlDimensionAttributeFormat,
     });
     if (attribute.type === 'dimension') {
-      this.formControlDimensionAttributeFormat.setValue(attribute.format);
+      this.formControlDimensionAttributeFormat.setValue(getFormatMetadataEntry(attribute));
     }
 
 
@@ -116,7 +121,7 @@ export class EditAttributeDialogComponent implements AfterViewInit {
       format: this.formControlVolumeAttributeFormat,
     });
     if (attribute.type === 'volume') {
-      this.formControlVolumeAttributeFormat.setValue(attribute.format);
+      this.formControlVolumeAttributeFormat.setValue(getFormatMetadataEntry(attribute));
     }
 
 
@@ -125,7 +130,7 @@ export class EditAttributeDialogComponent implements AfterViewInit {
       format: this.formControlAreaAttributeFormat,
     });
     if (attribute.type === 'area') {
-      this.formControlAreaAttributeFormat.setValue(attribute.format);
+      this.formControlAreaAttributeFormat.setValue(getFormatMetadataEntry(attribute));
     }
 
     this.formControlWidthAttributeFormat = this.formBuilder.control('', [numberFormatValidator]);
@@ -133,7 +138,7 @@ export class EditAttributeDialogComponent implements AfterViewInit {
       format: this.formControlWidthAttributeFormat,
     });
     if (attribute.type === 'width') {
-      this.formControlWidthAttributeFormat.setValue(attribute.format);
+      this.formControlWidthAttributeFormat.setValue(getFormatMetadataEntry(attribute));
     }
 
     this.formControlHeightAttributeFormat = this.formBuilder.control('', [numberFormatValidator]);
@@ -141,7 +146,7 @@ export class EditAttributeDialogComponent implements AfterViewInit {
       format: this.formControlHeightAttributeFormat,
     });
     if (attribute.type === 'height') {
-      this.formControlHeightAttributeFormat.setValue(attribute.format);
+      this.formControlHeightAttributeFormat.setValue(getFormatMetadataEntry(attribute));
     }
 
     this.formControlLengthAttributeFormat = this.formBuilder.control('', [numberFormatValidator]);
@@ -149,7 +154,7 @@ export class EditAttributeDialogComponent implements AfterViewInit {
       format: this.formControlLengthAttributeFormat
     });
     if (attribute.type === 'length') {
-      this.formControlLengthAttributeFormat.setValue(attribute.format);
+      this.formControlLengthAttributeFormat.setValue(getFormatMetadataEntry(attribute));
     }
   }
 
@@ -201,34 +206,34 @@ export class EditAttributeDialogComponent implements AfterViewInit {
     att.type = this.formControlAttributeType.value;
     switch (att.type) {
       case 'number':
-        att.format = this.formControlNumberAttributeFormat.value;
+        setFormatMetadataEntry(att, this.formControlNumberAttributeFormat.value);
         break;
       case 'date':
-        att.format = this.formControlDateAttributeFormat.value;
+        setFormatMetadataEntry(att, this.formControlDateAttributeFormat.value);
         break;
       case 'currency':
-        att.showCurrencyCountry = this.formControlCurrencyAttributeCountry.value;
+        setShowCurrencyCountryMetadataEntry(att, this.formControlCurrencyAttributeCountry.value);
         break;
       case 'dimension':
-        att.format = this.formControlDimensionAttributeFormat.value;
+        setFormatMetadataEntry(att, this.formControlDimensionAttributeFormat.value);
         break;
       case 'volume':
-        att.format = this.formControlVolumeAttributeFormat.value;
+        setFormatMetadataEntry(att, this.formControlVolumeAttributeFormat.value);
         break;
       case 'area':
-        att.format = this.formControlAreaAttributeFormat.value;
+        setFormatMetadataEntry(att, this.formControlAreaAttributeFormat.value);
         break;
       case 'width':
-        att.format = this.formControlWidthAttributeFormat.value;
+        setFormatMetadataEntry(att, this.formControlWidthAttributeFormat.value);
         break;
       case 'height':
-        att.format = this.formControlHeightAttributeFormat.value;
+        setFormatMetadataEntry(att, this.formControlHeightAttributeFormat.value);
         break;
       case 'length':
-        att.format = this.formControlLengthAttributeFormat.value;
+        setFormatMetadataEntry(att, this.formControlLengthAttributeFormat.value);
         break;
       case 'select':
-        att.pair1 = this.singleSelectComponent.getModifiedPair1();
+        // att.pair1 = this.singleSelectComponent.getModifiedPair1();
         break;
       case 'doubleselect':
         break;

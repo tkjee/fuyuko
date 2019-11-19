@@ -10,7 +10,7 @@ export interface Pair2Map {
 }
 
 export const doubleSelectToObjectMap: doubleSelectToMapType  = (attribute: Attribute) => {
-    return attribute.pair2.reduce((o: Pair2Map, p: Pair2) => {
+    return attribute.metadatas.pair2.reduce((o: Pair2Map, p: Pair2) => {
         if (!o[p.key1]) {
             o[p.key1] = [];
         }

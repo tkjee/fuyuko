@@ -37,57 +37,57 @@
 
         <!-- number -->
         <ng-container *ngIf="attribute.type === 'number'">
-          format: {{attribute?.format}}
+          format: {{attribute?.metadatas[0]?.value}}
         </ng-container>
 
         <!-- date -->
         <ng-container *ngIf="attribute.type ==='date'">
-          format: {{attribute?.format}}
+          format: {{attribute?.metadatas[0]?.value}}
         </ng-container>
 
         <!-- time -->
         <ng-container *ngIf="attribute.type === 'time'">
-          format: {{attribute?.format}}
+          format: {{attribute?.metadatas[0]?.value}}
         </ng-container>
 
         <!-- datetime -->
         <ng-container *ngIf="attribute.type === 'datetime'">
-          format: {{attribute?.format}}
+          format: {{attribute?.metadatas[0]?.value}}
         </ng-container>
 
         <!-- currency -->
         <ng-container *ngIf="attribute.type === 'currency'">
-          showCurrencyCountry: {{attribute?.showCurrencyCountry}}
+          showCurrencyCountry: {{attribute?.metadatas[0]?.showCurrencyCountry}}
         </ng-container>
 
         <!-- volumne -->
         <ng-container *ngIf="attribute.type === 'volumne'">
-          format: {{attribute?.format}}
+          format: {{attribute?.metadatas[0]?.value}}
         </ng-container>
 
         <!-- dimension -->
         <ng-container *ngIf="attribute.type === 'dimension'">
-          format: {{attribute?.format}}
+          format: {{attribute?.metadatas[0]?.value}}
         </ng-container>
 
         <!-- area -->
         <ng-container *ngIf="attribute.type === 'area'">
-          format: {{attribute?.format}}
+          format: {{attribute?.metadatas[0]?.value}}
         </ng-container>
 
         <!-- width -->
         <ng-container *ngIf="attribute.type === 'width'">
-          format: {{attribute?.format}}
+          format: {{attribute?.metadatas[0]?.value}}
         </ng-container>
 
         <!-- height -->
         <ng-container *ngIf="attribute.type === 'height'">
-          format: {{attribute?.format}}
+          format: {{attribute?.metadatas[0]?.value}}
         </ng-container>
 
         <!-- length -->
         <ng-container *ngIf="attribute.type === 'length'">
-          format: {{attribute?.format}}
+          format: {{attribute?.metadatas[0]?.value}}
         </ng-container>
       </td>
     </ng-container>
