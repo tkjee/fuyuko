@@ -11,47 +11,63 @@ import {
   VolumeValue, WidthValue, Value
 } from '../model/item.model';
 
-export const hasItemValue = (attribute: Attribute, value: Value): boolean => {
-    if (!value || !value.val) {
+export const hasItemValue = (attribute: Attribute, values: Value[]): boolean => {
+    if (!values || !values.length) {
       return false;
     }
-    switch (attribute.type) {
-      case 'string':
-        return (!!(value.val as StringValue).value);
-      case 'text':
-        return  (!!(value.val as TextValue).value);
-      case 'date':
-        return (!!(value.val as DateValue).value);
-      case 'number':
-        console.log('***** number validity', !Number.isNaN(Number((value.val as NumberValue).value)));
-        return (!Number.isNaN(Number((value.val as NumberValue).value)));
-      case 'currency':
-        return (!Number.isNaN(Number((value.val as CurrencyValue).value)) && (!!(value.val as CurrencyValue).country));
-      case 'area':
-        return (!Number.isNaN(Number((value.val as AreaValue).value)) && (!!(value.val as AreaValue).unit));
-      case 'volume':
-        return (!Number.isNaN(Number((value.val as VolumeValue).value)) && (!!(value.val as VolumeValue).unit));
-      case 'dimension':
-        return (
-            (!Number.isNaN(Number((value.val as DimensionValue).height))) &&
-            (!Number.isNaN(Number((value.val as DimensionValue).width))) &&
-            (!Number.isNaN(Number((value.val as DimensionValue).length))) &&
-            (!!(value.val as DimensionValue).unit)
-        );
-      case 'width':
-        return (!Number.isNaN(Number((value.val as WidthValue).value)) && (!!(value.val as WidthValue).unit));
-      case 'height':
-        return (!Number.isNaN(Number((value.val as HeightValue).value)) && (!!(value.val as HeightValue).unit));
-      case 'length':
-        return (!Number.isNaN(Number((value.val as LengthValue).value)) && (!!(value.val as LengthValue).unit));
-      case 'select':
-        return  (!!(value.val as SelectValue).key);
-      case 'doubleselect':
-        return  (
-            (!!(value.val as DoubleSelectValue).key1) &&
-            (!!(value.val as DoubleSelectValue).key2)
-        );
+    let r = true;
+    for (const value of values) {
+      switch (attribute.type) {
+        case 'string':
+          r = r &&  (!!(value.val as StringValue).value);
+          break;
+        case 'text':
+          r = r && (!!(value.val as TextValue).value);
+          break;
+        case 'date':
+          r = r && (!!(value.val as DateValue).value);
+          break;
+        case 'number':
+          r = r && (!Number.isNaN(Number((value.val as NumberValue).value)));
+          break;
+        case 'currency':
+          r = r && (!Number.isNaN(Number((value.val as CurrencyValue).value)) && (!!(value.val as CurrencyValue).country));
+          break;
+        case 'area':
+          r = r && (!Number.isNaN(Number((value.val as AreaValue).value)) && (!!(value.val as AreaValue).unit));
+          break;
+        case 'volume':
+          r = r && (!Number.isNaN(Number((value.val as VolumeValue).value)) && (!!(value.val as VolumeValue).unit));
+          break;
+        case 'dimension':
+          r = r && (
+              (!Number.isNaN(Number((value.val as DimensionValue).height))) &&
+              (!Number.isNaN(Number((value.val as DimensionValue).width))) &&
+              (!Number.isNaN(Number((value.val as DimensionValue).length))) &&
+              (!!(value.val as DimensionValue).unit)
+          );
+          break;
+        case 'width':
+          r = r && (!Number.isNaN(Number((value.val as WidthValue).value)) && (!!(value.val as WidthValue).unit));
+          break;
+        case 'height':
+          r = r && (!Number.isNaN(Number((value.val as HeightValue).value)) && (!!(value.val as HeightValue).unit));
+          break;
+        case 'length':
+          r = r && (!Number.isNaN(Number((value.val as LengthValue).value)) && (!!(value.val as LengthValue).unit));
+          break;
+        case 'select':
+          r = r &&  (!!(value.val as SelectValue).key);
+          break;
+        case 'doubleselect':
+          r = r &&  (
+              (!!(value.val as DoubleSelectValue).key1) &&
+              (!!(value.val as DoubleSelectValue).key2)
+          );
+          break;
+      }
     }
+    return r;
 };
 
 const internalGetItemValue = (attribute: Attribute, item: TableItem | Item): ItemValTypes => {

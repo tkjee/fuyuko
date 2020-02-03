@@ -113,7 +113,7 @@ export class BulkEditWizardComponent implements OnInit, OnChanges {
         }
         const attribute: Attribute = this.attributes[0];
         const operators: OperatorType[] = operatorsForAttribute(attribute);
-        const val: Value = createNewItemValue(attribute);
+        const val: Value[] = [createNewItemValue(attribute)];
         this.whereClauses.push({
             attribute,
             operator: ((operators && operators.length > 0) ? operators[0] : undefined),

@@ -6,7 +6,7 @@ import {Subscription} from 'rxjs';
 import {ActivatedRoute, Router} from '@angular/router';
 import {isItemValueOperatorAndAttributeValid} from '../../utils/item-value-operator-attribute.util';
 import {OperatorType} from '../../model/operator.model';
-import {Value} from '../../model/item.model';
+import {ItemValTypes, Value} from '../../model/item.model';
 import {ItemValueOperatorAndAttribute, ItemValueOperatorAndAttributeWithId} from '../../model/item-attribute.model';
 
 
@@ -104,8 +104,10 @@ export class RuleEditorComponent implements OnChanges {
                     const attribute: Attribute = this.attributes.find(
                         (a: Attribute) => a.id === ruleValidateClause.attributeId);
                     const operator: OperatorType = ruleValidateClause.operator;
-                    const itemValue: Value =
-                        { attributeId: attribute.id, val: ruleValidateClause.condition} as Value;
+                    const itemValue: Value[] = ruleValidateClause.condition.map((c: ItemValTypes) => ({
+                        attributeId: attribute.id, val: c
+                    }));
+                    // { attributeId: attribute.id, val: ruleValidateClause.condition} as Value;
 
                     this.validateClauses.push({
                         id: rId,
@@ -122,7 +124,10 @@ export class RuleEditorComponent implements OnChanges {
                     const attribute: Attribute = this.attributes.find(
                         (a: Attribute) => a.id === whenClause.attributeId);
                     const operator: OperatorType = whenClause.operator;
-                    const itemValue: Value = { attributeId: attribute.id, val: whenClause.condition } as Value;
+                    const itemValue: Value[] = whenClause.condition.map((c: ItemValTypes) => ({
+                        attributeId: attribute.id, val: c
+                    }));
+                    // { attributeId: attribute.id, val: whenClause.condition } as Value;
 
                     this.whenClauses.push({
                         id: rId,
@@ -138,7 +143,7 @@ export class RuleEditorComponent implements OnChanges {
     onAddRuleValidation($event: MouseEvent) {
         const attribute: Attribute = null;
         const operator: OperatorType = null;
-        const itemValue: Value = null;
+        const itemValue: Value[] = [];
 
         this.validateClauses.push({
             id: this.counter--,
@@ -157,7 +162,7 @@ export class RuleEditorComponent implements OnChanges {
     onAddRuleWhen($event: MouseEvent) {
         const attribute: Attribute = null;
         const operator: OperatorType = null;
-        const itemValue: Value = null;
+        const itemValue: Value[] = [];
 
         this.whenClauses.push({
             id: this.counter--,
@@ -185,7 +190,7 @@ export class RuleEditorComponent implements OnChanges {
                     attributeName: g.attribute.name,
                     attributeType: g.attribute.type,
                     operator: g.operator,
-                    condition: g.itemValue.val
+                    condition: g.itemValue.map((v: Value) => v.val)
                 } as ValidateClause);
                 return acc;
             }, []),
@@ -196,7 +201,7 @@ export class RuleEditorComponent implements OnChanges {
                     attributeName: g.attribute.name,
                     attributeType: g.attribute.type,
                     operator: g.operator,
-                    condition: g.itemValue.val
+                    condition: g.itemValue.map((v: Value) => v.val)
                 } as ValidateClause);
                 return acc;
             }, [])

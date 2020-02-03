@@ -17,8 +17,9 @@ export interface ItemValueAndAttribute {
   attribute: Attribute;
 }
 
+// note: find usage for this
 export interface ItemValueOperatorAndAttribute {
-  itemValue: Value;
+  itemValue: Value[];
   operator: OperatorType;
   attribute: Attribute;
 }
