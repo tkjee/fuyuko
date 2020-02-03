@@ -94,6 +94,8 @@ export class ViewRulesPageComponent implements OnInit, OnDestroy {
     async onRulesTableEvent($event: RulesTableComponentEvent) {
         switch ($event.type) {
       case 'add':
+        await this.router.navigate(['/view-gen-layout', {outlets: {primary: ['rule', ``], help: ['view-help']}}]);
+        /*
         this.ruleService.addRule(this.currentView.id, $event.rule)
           .pipe(
             map( (r: ApiResponse) => {
@@ -101,18 +103,9 @@ export class ViewRulesPageComponent implements OnInit, OnDestroy {
               this.reload();
             })
           ).subscribe();
+        */
         break;
       case 'edit':
-        this.ruleService.updateRule(this.currentView.id, $event.rule)
-          .pipe(
-            map( (r: ApiResponse) => {
-              toNotifications(this.notificationService, r);
-              this.reload();
-            })
-          ).subscribe();
-        break;
-      case 'external-edit':
-        console.log('***************** external-edit', $event);
         await this.router.navigate(['/view-gen-layout', {outlets: {primary: ['rule', `${$event.rule.id}`], help: ['view-help']}}]);
         break;
       case 'delete':

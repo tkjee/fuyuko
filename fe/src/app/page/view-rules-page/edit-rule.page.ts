@@ -5,7 +5,7 @@ import {NotificationsService} from 'angular2-notifications';
 import {RuleService} from '../../service/rule-service/rule.service';
 import {map, tap} from 'rxjs/operators';
 import {View} from '../../model/view.model';
-import {combineLatest, Subscription} from 'rxjs';
+import {combineLatest, Subscription, zip} from 'rxjs';
 import {Attribute} from '../../model/attribute.model';
 import {Rule} from '../../model/rule.model';
 import {ActivatedRoute, Router} from '@angular/router';
@@ -59,16 +59,35 @@ export class EditRulePageComponent implements OnInit, OnDestroy {
     reload() {
         this.ready = false;
         const ruleId: string = this.route.snapshot.paramMap.get('ruleId');
-        combineLatest([
-            this.attributeService.getAllAttributesByView(this.currentView.id),
-            this.ruleService.getRuleByView(this.currentView.id, Number(ruleId))
-        ]).pipe(
-            tap((r: [Attribute[], Rule]) => {
-                this.attributes = r[0];
-                this.rule = r[1];
-                this.ready = true;
-            })
-        ).subscribe();
+        if (ruleId && Number(ruleId) > 0) { // update existing rule
+            combineLatest([
+                this.attributeService.getAllAttributesByView(this.currentView.id),
+                this.ruleService.getRuleByView(this.currentView.id, Number(ruleId))
+            ]).pipe(
+                tap((r: [Attribute[], Rule]) => {
+                    this.attributes = r[0];
+                    this.rule = r[1];
+                    this.ready = true;
+                })
+            ).subscribe();
+        } else { // create new rule
+            combineLatest([
+                this.attributeService.getAllAttributesByView(this.currentView.id),
+            ]).pipe(
+                tap((r: [Attribute[]]) => {
+                    this.attributes = r[0];
+                    this.rule = {
+                        id: -1,
+                        status: null,
+                        name: '',
+                        description: '',
+                        validateClauses: [],
+                        whenClauses: []
+                    };
+                    this.ready = true;
+                })
+            ).subscribe();
+        }
     }
 
     async onRuleEditorEvent($event: RuleEditorComponentEvent) {
@@ -77,13 +96,23 @@ export class EditRulePageComponent implements OnInit, OnDestroy {
                 await this.router.navigate(['/view-gen-layout', {outlets: {primary: ['rules'], help: ['view-help'] }}]);
                 break;
             case 'update':
-                this.ruleService.updateRule(this.currentView.id, $event.rule)
-                    .pipe(
-                        tap((_) => {
-                            this.notificationService.success(`Updated`, `Rule updated`);
-                            this.reload();
-                        })
-                    ).subscribe();
+                if ($event.rule.id) { // update
+                    this.ruleService.updateRule(this.currentView.id, $event.rule)
+                        .pipe(
+                            tap((_) => {
+                                this.notificationService.success(`Updated`, `Rule updated`);
+                                this.reload();
+                            })
+                        ).subscribe();
+                } else { // add
+                    this.ruleService.addRule(this.currentView.id, $event.rule)
+                        .pipe(
+                            tap((_) => {
+                                this.notificationService.success(`Added`, `Rule Added`);
+                                this.reload();
+                            })
+                        ).subscribe();
+                }
                 break;
         }
     }

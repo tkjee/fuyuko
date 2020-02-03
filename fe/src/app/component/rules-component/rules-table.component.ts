@@ -1,13 +1,11 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {Rule} from '../../model/rule.model';
-import {OperatorType} from '../../model/operator.model';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import {RuleEditorDialogComponent, RuleEditorDialogComponentData} from './rule-editor-dialog.component';
 import {map} from 'rxjs/operators';
 import {Attribute} from '../../model/attribute.model';
 
 export interface RulesTableComponentEvent {
-  type: 'add' | 'edit' | 'delete' | 'enable' | 'disable' | 'external-edit';
+  type: 'add' | 'edit' | 'delete' | 'enable' | 'disable' ;
   rule: Rule;
 }
 
@@ -41,36 +39,25 @@ export class RulesTableComponent {
 
   onExternalEdit($event: MouseEvent, rule: Rule) {
     this.events.emit({
-      type: 'external-edit',
+      type: 'edit',
       rule: {...rule}
     } as RulesTableComponentEvent);
   }
 
-  onEditRule($event: MouseEvent, rule: Rule) {
-    $event.stopImmediatePropagation();
-    $event.preventDefault();
-    const matDialogRef: MatDialogRef<RuleEditorDialogComponent, Rule> = this.matDialog.open(RuleEditorDialogComponent, {
-      minWidth: '60vw',
-      minHeight: '30vh',
-      data: {
-        attributes: [...this.attributes],
-        rule: {...rule},
-      } as RuleEditorDialogComponentData
-    });
-    matDialogRef.afterClosed()
-      .pipe(
-        map((r: Rule) => {
-          if (r) {
-            this.events.emit({
-              type: 'edit',
-              rule: {...r}
-            } as RulesTableComponentEvent);
-          }
-        })
-      ).subscribe();
-  }
-
   onAddRule($event: MouseEvent) {
+    const newRule: Rule = {
+      id: this.counter--,
+      status: null,
+      name: '',
+      description: '',
+      validateClauses: [],
+      whenClauses: []
+    };
+    this.events.emit({
+        type: 'add',
+        rule: {...newRule}
+      } as RulesTableComponentEvent);
+    /*
     const matDialogRef: MatDialogRef<RuleEditorDialogComponent, Rule> = this.matDialog.open(RuleEditorDialogComponent, {
       minWidth: '60vw',
       minHeight: '30vh',
@@ -96,6 +83,7 @@ export class RulesTableComponent {
           }
         })
       ).subscribe();
+     */
   }
 
   findAttribute(attributeId: number): Attribute {
