@@ -38,7 +38,17 @@ export const clickOnSuccessMessageToasts = () => {
     });
      */
     // cy.waitUntil(() => cy.get('simple-notifications .simple-notification.success')).first().click({force: true});
-    cy.get('simple-notifications .simple-notification.success').first().click({force: true});
+    cy.waitUntil(() => {
+        return cy.get('simple-notifications .simple-notification.success').then((_) => {
+            return (_.length > 0)
+        })
+    });
+    cy.get("body").then($body => {
+        if ($body.find("simple-notifications .simple-notification.success").length > 0) {   //evaluates as true
+            // cy.get("simple-notifications .simple-notification.success").click();
+            cy.get('simple-notifications .simple-notification.success').first().click({force: true});
+        }
+    });
 }
 
 export const clickOnErrorMessageToasts = () => {

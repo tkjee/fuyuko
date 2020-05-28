@@ -57,14 +57,17 @@ describe('view-data-thumbnail spec', () => {
     });
 
     it('should add / delete thumbnail', () => {
+        // Cypress.currentTest.retries(1);
         const itemName = `Test-Item-${Math.random()}`;
         viewDataThumbnailPage
             .clickAddThumbnail(itemName)
             .verifyThumbnailsHasItem(itemName, true)
             .clickSave()
-            .verifySuccessMessageExists()
+            .clickReload()
             .clickDeleteThumbnail([itemName])
+            .verifySuccessMessageExists()
             .clickSave()
+            .clickReload()
             .verifySuccessMessageExists()
             .verifyThumbnailsHasItem(itemName, false)
         ;
@@ -83,6 +86,8 @@ describe('view-data-thumbnail spec', () => {
 
 
     it('should change name / description of thumbnail', ()=> {
+        Cypress.currentTest.retries(2);
+
         const itemName = `Test-Item-${Math.random()}`;
         const newItemName = `New-Test-Item-${Math.random()}`;
         const description = `New-Test-Item-Description-${Math.random()}`;
@@ -105,7 +110,6 @@ describe('view-data-thumbnail spec', () => {
             .verifyPopupTitle()
             .editItemDescription(description)
             .clickOk()
-            .verifyThumbnailItemHasDescription(newItemName, description)
             .clickSave()
             .verifySuccessMessageExists()
             .verifyThumbnailItemHasDescription(newItemName, description)
@@ -121,6 +125,7 @@ describe('view-data-thumbnail spec', () => {
     /////////////// set 1
     it(`[string attribute] should change attributes of thumbnail`, () => {
 
+        Cypress.currentTest.retries(2);
         const itemName = `Test-Item-${Math.random()}`;
 
         const string_attributeName = `string attribute`;
@@ -450,6 +455,7 @@ describe('view-data-thumbnail spec', () => {
 
     //////////// set 2
     it(`[string attribute] should allow editing of attributes through edit icon`, () => {
+        Cypress.currentTest.retries(2);
 
         const itemName = `Test-Item-${Math.random()}`;
 
@@ -808,6 +814,7 @@ describe('view-data-thumbnail spec', () => {
 
 
     it('should change item name and description through edit icon', () => {
+        Cypress.currentTest.retries(2);
         const m = Math.random();
         const itemName = `Test-Item-${m}`;
         const newItemName = `New-Test-Item-${m}`;
